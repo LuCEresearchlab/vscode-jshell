@@ -30,12 +30,6 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "vs-jshell.create",
-        "title": "JShell: new session"
-      }
-    ],
     "terminal": {
       "profiles": [
         {
