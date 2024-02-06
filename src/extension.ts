@@ -1,7 +1,6 @@
+import fs from 'fs';
 import { posix } from 'path';
 import * as vscode from 'vscode';
-
-import fs from 'fs';
 
 export function activate(context: vscode.ExtensionContext) {
   const profile = {
