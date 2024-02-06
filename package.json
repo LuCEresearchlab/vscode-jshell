@@ -30,6 +30,60 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": [
+      {
+        "id": "vscode-jshell-config",
+        "title": "JShell",
+        "properties": {
+          "jshell.shellPath": {
+            "order": 0,
+            "description": "Path to the `jshell` executable",
+            "type": "string",
+            "default": "jshell"
+          },
+          "jshell.feedback": {
+            "order": 1,
+            "description": "Specify the initial feedback mode",
+            "type": "string",
+            "default": "normal",
+            "enum": [
+              "silent",
+              "concise",
+              "normal",
+              "verbose"
+            ]
+          },
+          "jshell.nativeAccess": {
+            "order": 2,
+            "description": "Allow code to run restricted native methods",
+            "type": "boolean"
+          },
+          "jshell.preview": {
+            "order": 2,
+            "description": "Allow code to depend on preview features of this release",
+            "type": "boolean"
+          },
+          "jshell.compilerFlags": {
+            "order": 3,
+            "description": "Pass flags to the compiler (separate by space)",
+            "type": "string",
+            "default": ""
+          },
+          "jshell.runtimeFlags": {
+            "order": 3,
+            "description": "Pass flags directly to the runtime system (separate by space)",
+            "type": "string",
+            "default": ""
+          },
+          "jshell.remoteRuntimeFlags": {
+            "order": 3,
+            "description": "Pass flags directly to the remote runtime system (separate by space)",
+            "type": "string",
+            "default": ""
+          }
+        }
+      }
+    ],
     "terminal": {
       "profiles": [
         {

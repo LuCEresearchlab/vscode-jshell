@@ -8,7 +8,9 @@ export function activate(context: vscode.ExtensionContext) {
       token: vscode.CancellationToken
     ): vscode.ProviderResult<vscode.TerminalProfile> {
       let cwd: string | undefined;
-      let shellArgs: string[] = [];
+
+      const shellArgs: string[] = getArgumentsFromConfig();
+
       if (vscode.workspace.workspaceFolders) {
         const folderUri = vscode.workspace.workspaceFolders[0].uri;
         const initJshUri = folderUri.with({
@@ -19,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
             cwd = folderUri.fsPath;
           }
           if (fs.existsSync(initJshUri.fsPath)) {
-            shellArgs = [initJshUri.fsPath];
+            shellArgs.push(initJshUri.fsPath);
           }
         } catch {
           // Ignored
@@ -29,7 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
       return {
         options: {
           name: 'JShell',
-          shellPath: 'jshell',
+          shellPath: getShellPath(),
           shellArgs,
           cwd,
         },
@@ -41,4 +43,50 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
+}
+
+function getArgumentsFromConfig() {
+  const config = vscode.workspace.getConfiguration('jshell');
+  const args: string[] = [];
+
+  const configValues = {
+    feedback: config.get<string>('feedback'),
+    nativeAccess: config.get<boolean>('nativeAccess'),
+    preview: config.get<boolean>('preview'),
+    compilerFlags: config.get<string>('compilerFlags'),
+    runtimeFlags: config.get<string>('runtimeFlags'),
+    remoteRuntimeFlags: config.get<string>('remoteRuntimeFlags'),
+  }
+
+  if (configValues.feedback) {
+    args.push('--feedback');
+    args.push(configValues.feedback);
+  }
+  if (configValues.nativeAccess) {
+    args.push('--enable-native-access');
+  }
+  if (configValues.preview) {
+    args.push('--enable-preview');
+  }
+  if (configValues.compilerFlags) {
+    for (const flag in configValues.compilerFlags.split(' ')) {
+      args.push(`-C${flag}`)
+    }
+  }
+  if (configValues.runtimeFlags) {
+    for (const flag in configValues.runtimeFlags.split(' ')) {
+      args.push(`-J${flag}`)
+    }
+  }
+  if (configValues.remoteRuntimeFlags) {
+    for (const flag in configValues.remoteRuntimeFlags.split(' ')) {
+      args.push(`-R${flag}`)
+    }
+  }
+
+  return args;
+}
+
+function getShellPath() {
+  return vscode.workspace.getConfiguration('jshell').get<string>('shellPath')
 }
