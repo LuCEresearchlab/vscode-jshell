@@ -56,7 +56,7 @@ function getArgumentsFromConfig() {
     compilerFlags: config.get<string>('compilerFlags'),
     runtimeFlags: config.get<string>('runtimeFlags'),
     remoteRuntimeFlags: config.get<string>('remoteRuntimeFlags'),
-  }
+  };
 
   if (configValues.feedback) {
     args.push('--feedback');
@@ -70,17 +70,17 @@ function getArgumentsFromConfig() {
   }
   if (configValues.compilerFlags) {
     for (const flag in configValues.compilerFlags.split(' ')) {
-      args.push(`-C${flag}`)
+      args.push(`-C${flag}`);
     }
   }
   if (configValues.runtimeFlags) {
     for (const flag in configValues.runtimeFlags.split(' ')) {
-      args.push(`-J${flag}`)
+      args.push(`-J${flag}`);
     }
   }
   if (configValues.remoteRuntimeFlags) {
     for (const flag in configValues.remoteRuntimeFlags.split(' ')) {
-      args.push(`-R${flag}`)
+      args.push(`-R${flag}`);
     }
   }
 
@@ -88,5 +88,5 @@ function getArgumentsFromConfig() {
 }
 
 function getShellPath() {
-  return vscode.workspace.getConfiguration('jshell').get<string>('shellPath')
+  return vscode.workspace.getConfiguration('jshell').get<string>('shellPath');
 }
