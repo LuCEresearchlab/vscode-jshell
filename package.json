@@ -2,6 +2,7 @@
   "name": "vs-jshell",
   "displayName": "vs-jshell",
   "description": "JShell integration for VSCode",
+  "icon": "assets/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/LuceResearchLab/vscode-jshell.git"
