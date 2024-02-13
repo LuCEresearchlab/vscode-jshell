@@ -3,6 +3,7 @@
 ## Features
 
 - Adds "JShell" terminal profile which uses the `jshell` available in `$PATH`
+- Automatically sets the classpath to the contents of the `.vscode/class-path.jsh` file (new-line separated entries)
 - Automatically loads the `.vscode/init.jsh` file, if found in the current workspace
 - JShell configuration in VSCode settings
 

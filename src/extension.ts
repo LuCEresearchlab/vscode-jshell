@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { posix } from 'path';
+import path from 'path';
 import * as vscode from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -13,12 +14,22 @@ export function activate(context: vscode.ExtensionContext) {
 
       if (vscode.workspace.workspaceFolders) {
         const folderUri = vscode.workspace.workspaceFolders[0].uri;
+        const cpUri = folderUri.with({
+          path: posix.join(folderUri.path, '.vscode', 'class-path.jsh'),
+        });
         const initJshUri = folderUri.with({
           path: posix.join(folderUri.path, '.vscode', 'init.jsh'),
         });
         try {
           if (fs.existsSync(folderUri.fsPath)) {
             cwd = folderUri.fsPath;
+          }
+          if (fs.existsSync(cpUri.fsPath)) {
+            const classPath = getClassPath(folderUri, cpUri);
+            if (classPath.length > 0) {
+              shellArgs.push('--class-path');
+              shellArgs.push(classPath);
+            }
           }
           if (fs.existsSync(initJshUri.fsPath)) {
             shellArgs.push(initJshUri.fsPath);
@@ -85,6 +96,25 @@ function getArgumentsFromConfig() {
   }
 
   return args;
+}
+
+function getClassPath(
+  workspaceUri: vscode.Uri,
+  classPathFileUri: vscode.Uri,
+): string {
+  const contents = fs.readFileSync(classPathFileUri.fsPath, 'utf-8');
+  return contents
+    .replace('\r\n', '\n') // CRLF -> LF
+    .replace('\r', '\n') // CR -> LF
+    .split('\n') // Split LF
+    .filter(line => line.length > 0) // Non-empty
+    .filter(path => {
+      const uri = workspaceUri.with({
+        path: posix.join(workspaceUri.path, ...path.split('/')),
+      });
+      return fs.existsSync(uri.fsPath);
+    }) // Entry exists
+    .join(path.delimiter);
 }
 
 function getShellPath() {
