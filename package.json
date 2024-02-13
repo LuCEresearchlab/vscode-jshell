@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/LuceResearchLab/vscode-jshell.git"
   },
-  "publisher": "Lugano Computing Education Research Lab",
+  "publisher": "luceresearchlab",
   "maintainers": [
     {
       "name": "Joey Bevilacqua",
