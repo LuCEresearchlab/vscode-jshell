@@ -80,22 +80,22 @@ function getArgumentsFromConfig() {
     args.push('--enable-preview');
   }
   if (configValues.compilerFlags) {
-    for (const flag in configValues.compilerFlags.split(' ')) {
-      args.push(`-C${flag}`);
-    }
+    args.push(...getFlags(configValues.compilerFlags, '-C'));
   }
   if (configValues.runtimeFlags) {
-    for (const flag in configValues.runtimeFlags.split(' ')) {
-      args.push(`-J${flag}`);
-    }
+    args.push(...getFlags(configValues.runtimeFlags, '-J'));
   }
   if (configValues.remoteRuntimeFlags) {
-    for (const flag in configValues.remoteRuntimeFlags.split(' ')) {
-      args.push(`-R${flag}`);
-    }
+    args.push(...getFlags(configValues.remoteRuntimeFlags, '-R'));
   }
 
   return args;
+}
+
+function getFlags(config: string, option: string): string[] {
+  return config.split(' ')
+    .filter(flag => flag.length > 0)
+    .flatMap(flag => [option, flag]);
 }
 
 function getClassPath(
