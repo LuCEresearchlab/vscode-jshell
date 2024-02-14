@@ -14,7 +14,7 @@
       "email": "bevilj@usi.ch"
     }
   ],
-  "version": "1.0.2",
+  "version": "1.0.3",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -80,7 +80,7 @@
             "order": 3,
             "description": "Pass flags directly to the remote runtime system (separate by space)",
             "type": "string",
-            "default": ""
+            "default": "-ea"
           }
         }
       }
