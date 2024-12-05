@@ -17,7 +17,7 @@ function getFlags(config: string, option: string): string[] {
  * - jshell.runtimeFlags: string
  * - jshell.remoteRuntimeFlags: string
  */
-export function getShellArgs(): string[] {
+export function getShellConfigArgs(): string[] {
   const config = vscode.workspace.getConfiguration('jshell');
   const args: string[] = [];
 

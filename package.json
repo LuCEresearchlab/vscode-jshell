@@ -31,6 +31,13 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "vs-jshell:cmd-open-term",
+        "title": "Open new JShell session",
+        "icon": "$(coffee)"
+      }
+    ],
     "configuration": [
       {
         "id": "vscode-jshell-config",
@@ -85,11 +92,19 @@
         }
       }
     ],
+    "keybindings": [
+      {
+        "command": "vs-jshell:cmd-open-term",
+        "key": "Alt+\\",
+        "when": "terminalProcessSupported && editorTextFocus && editorLangId == java"
+      }
+    ],
     "terminal": {
       "profiles": [
         {
           "id": "vs-jshell:terminal-profile",
-          "title": "JShell"
+          "title": "JShell",
+          "icon": "$(coffee)"
         }
       ]
     }

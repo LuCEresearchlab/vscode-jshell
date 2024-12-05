@@ -4,7 +4,7 @@ import { posix } from 'path';
 import * as vscode from 'vscode';
 
 import {
-  getShellArgs,
+  getShellConfigArgs,
   getShellPath,
 } from './config';
 
@@ -27,6 +27,44 @@ function getClassPath(
     .join(path.delimiter);
 }
 
+export function getShellArgs() {
+  const args: string[] = getShellConfigArgs();
+
+  if (vscode.workspace.workspaceFolders) {
+    const folderUri = vscode.workspace.workspaceFolders[0].uri;
+
+    try {
+      // Add additional entries to the classpath
+      const cpUri = folderUri.with({
+        path: posix.join(folderUri.path, '.vscode', 'class-path.jsh'),
+      });
+      if (fs.existsSync(cpUri.fsPath)) {
+        const classPath = getClassPath(folderUri, cpUri);
+        if (classPath.length > 0) {
+          args.push('--class-path');
+          args.push(classPath);
+        }
+      }
+    } catch (e) {
+      vscode.window.showErrorMessage(`Failed to read .vscode/class-path.jsh: ${e}`);
+    }
+
+    try {
+      // Execute code when the shell is started (e.g. imports)
+      const initJshUri = folderUri.with({
+        path: posix.join(folderUri.path, '.vscode', 'init.jsh'),
+      });
+      if (fs.existsSync(initJshUri.fsPath)) {
+        args.push(initJshUri.fsPath);
+      }
+    } catch (e) {
+      vscode.window.showErrorMessage(`Failed to read .vscode/init.jsh: ${e}`);
+    }
+  }
+
+  return args;
+}
+
 export function createTerminalProfile(): vscode.TerminalProfile {
   let cwd: string | undefined;
 
@@ -35,29 +73,9 @@ export function createTerminalProfile(): vscode.TerminalProfile {
   if (vscode.workspace.workspaceFolders) {
     const folderUri = vscode.workspace.workspaceFolders[0].uri;
 
-    // Add additional entries to the classpath
-    const cpUri = folderUri.with({
-      path: posix.join(folderUri.path, '.vscode', 'class-path.jsh'),
-    });
-
-    // Execute code when the shell is started (e.g. imports)
-    const initJshUri = folderUri.with({
-      path: posix.join(folderUri.path, '.vscode', 'init.jsh'),
-    });
-
     try {
       if (fs.existsSync(folderUri.fsPath)) {
         cwd = folderUri.fsPath;
-      }
-      if (fs.existsSync(cpUri.fsPath)) {
-        const classPath = getClassPath(folderUri, cpUri);
-        if (classPath.length > 0) {
-          shellArgs.push('--class-path');
-          shellArgs.push(classPath);
-        }
-      }
-      if (fs.existsSync(initJshUri.fsPath)) {
-        shellArgs.push(initJshUri.fsPath);
       }
     } catch {
       // Ignored
