@@ -2,7 +2,7 @@
 
 ## Features
 
-- Adds "JShell" terminal profile (`ALT + \` or `⌥ + \` in Java files)
+- Adds "JShell" terminal profile (`ALT + \` or `⌥ + \` when editing Java files)
 - Automatically sets the classpath to the contents of the `.vscode/class-path.jsh` file (new-line separated entries)
 - Automatically loads the `.vscode/init.jsh` file, if found in the current workspace
 - JShell configuration in VSCode settings
