@@ -95,8 +95,13 @@
     "keybindings": [
       {
         "command": "vs-jshell:cmd-open-term",
-        "key": "Alt+\\",
-        "when": "terminalProcessSupported && editorTextFocus && editorLangId == java"
+        "key": "Cmd+Alt+\\",
+        "when": "isMac && terminalProcessSupported && editorTextFocus && editorLangId == java"
+      },
+      {
+        "command": "vs-jshell:cmd-open-term",
+        "key": "Ctrl+Alt+\\",
+        "when": "!isMac && terminalProcessSupported && editorTextFocus && editorLangId == java"
       }
     ],
     "terminal": {
