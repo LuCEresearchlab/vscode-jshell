@@ -3,6 +3,7 @@ import * as os from "os";
 import * as vscode from 'vscode';
 
 import { getShellConfigArgs, getShellPath } from './config';
+import { getGradleStatus } from "./gradle";
 
 export function populateInfoChannel(chan: vscode.OutputChannel) {
   chan.appendLine("# JShell info");
@@ -14,4 +15,10 @@ export function populateInfoChannel(chan: vscode.OutputChannel) {
   chan.appendLine("## Configuration");
   chan.appendLine(`• Shell:    ${getShellPath()}`);
   chan.appendLine(`• Arguments: ${getShellConfigArgs().join(" ")}`);
+  // Gradle integration
+  const gradleStatus = getGradleStatus();
+  chan.appendLine("## Gradle integration");
+  chan.appendLine(`• Extension available: ${gradleStatus.extension.available}`);
+  chan.appendLine(`• Extension version:   ${gradleStatus.extension.version}`);
+  chan.appendLine(`• Project found:       ${gradleStatus.project}`);
 }

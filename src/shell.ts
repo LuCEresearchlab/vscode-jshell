@@ -7,6 +7,7 @@ import {
   getShellConfigArgs,
   getShellPath,
 } from './config';
+import { getMainWorkspaceUri } from './utils';
 
 function getClassPath(
   workspaceUri: vscode.Uri,
@@ -28,18 +29,17 @@ function getClassPath(
 }
 
 export function getShellArgs() {
-  const args: string[] = getShellConfigArgs();
+  const args = getShellConfigArgs();
+  const wsUri = getMainWorkspaceUri();
 
-  if (vscode.workspace.workspaceFolders) {
-    const folderUri = vscode.workspace.workspaceFolders[0].uri;
-
+  if (wsUri) {
+    // Add additional entries to the classpath
     try {
-      // Add additional entries to the classpath
-      const cpUri = folderUri.with({
-        path: posix.join(folderUri.path, '.vscode', 'class-path.jsh'),
+      const cpUri = wsUri.with({
+        path: posix.join(wsUri.path, '.vscode', 'class-path.jsh'),
       });
       if (fs.existsSync(cpUri.fsPath)) {
-        const classPath = getClassPath(folderUri, cpUri);
+        const classPath = getClassPath(wsUri, cpUri);
         if (classPath.length > 0) {
           args.push('--class-path');
           args.push(classPath);
@@ -49,10 +49,10 @@ export function getShellArgs() {
       vscode.window.showErrorMessage(`Failed to read .vscode/class-path.jsh: ${e}`);
     }
 
+    // Execute code when the shell is started (e.g. imports)
     try {
-      // Execute code when the shell is started (e.g. imports)
-      const initJshUri = folderUri.with({
-        path: posix.join(folderUri.path, '.vscode', 'init.jsh'),
+      const initJshUri = wsUri.with({
+        path: posix.join(wsUri.path, '.vscode', 'init.jsh'),
       });
       if (fs.existsSync(initJshUri.fsPath)) {
         args.push(initJshUri.fsPath);
@@ -66,28 +66,12 @@ export function getShellArgs() {
 }
 
 export function createTerminalProfile(): vscode.TerminalProfile {
-  let cwd: string | undefined;
-
-  const shellArgs: string[] = getShellArgs();
-
-  if (vscode.workspace.workspaceFolders) {
-    const folderUri = vscode.workspace.workspaceFolders[0].uri;
-
-    try {
-      if (fs.existsSync(folderUri.fsPath)) {
-        cwd = folderUri.fsPath;
-      }
-    } catch {
-      // Ignored
-    }
-  }
-
   return {
     options: {
       name: 'JShell',
       shellPath: getShellPath(),
-      shellArgs,
-      cwd,
+      shellArgs: getShellArgs(),
+      cwd: getMainWorkspaceUri()?.fsPath,
     },
   };
 }

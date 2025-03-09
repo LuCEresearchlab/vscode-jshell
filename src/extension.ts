@@ -1,5 +1,8 @@
 import * as vscode from 'vscode';
-import { openJShellTerminal } from './commands';
+import {
+  gradleAssembleAndOpenJShellTerminal,
+  openJShellTerminal,
+} from './commands';
 import { populateInfoChannel } from './info';
 import { createTerminalProfile } from './shell';
 
@@ -14,7 +17,14 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   // Commands
-  vscode.commands.registerCommand("vs-jshell:cmd-open-term", openJShellTerminal);
+  vscode.commands.registerCommand(
+    'vs-jshell:cmd-open-term',
+    openJShellTerminal,
+  );
+  vscode.commands.registerCommand(
+    'vs-jshell:cmd-gradle-assemble-open-term',
+    gradleAssembleAndOpenJShellTerminal,
+  );
 }
 
 export function deactivate() {

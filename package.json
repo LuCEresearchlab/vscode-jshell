@@ -36,6 +36,11 @@
         "command": "vs-jshell:cmd-open-term",
         "title": "Open new JShell session",
         "icon": "$(coffee)"
+      },
+      {
+        "command": "vs-jshell:cmd-gradle-assemble-open-term",
+        "title": "Assemble & Open new JShell session",
+        "icon": "$(coffee)"
       }
     ],
     "configuration": [
@@ -95,15 +100,20 @@
     "keybindings": [
       {
         "command": "vs-jshell:cmd-open-term",
-        "key": "Cmd+Alt+\\",
-        "when": "isMac && terminalProcessSupported && editorTextFocus && editorLangId == java"
-      },
-      {
-        "command": "vs-jshell:cmd-open-term",
-        "key": "Ctrl+Alt+\\",
-        "when": "!isMac && terminalProcessSupported && editorTextFocus && editorLangId == java"
+        "key": "Ctrl+Alt+J",
+        "mac": "Cmd+Alt+J",
+        "when": "terminalProcessSupported && editorTextFocus && editorLangId == java"
       }
     ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "when": "editorLangId == java",
+          "command": "vs-jshell:cmd-gradle-assemble-open-term",
+          "group": "navigation"
+        }
+      ]
+    },
     "terminal": {
       "profiles": [
         {
