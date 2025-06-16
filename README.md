@@ -19,3 +19,9 @@
   1. Download and extract the `vsix` file from the GitHub actions [artifacts](https://github.com/LuCEresearchlab/vscode-jshell/actions/workflows/build.yml)
   2. Execute `code --install-extension path/to/vscode-jshell-$VERSION.vsix`
   3. Open a new VSCode instance
+
+## Other
+
+- For build instructions, see [BUILD.md](./BUILD.md)
+- For notable changes, see [CHANGELOG.md](./CHANGELOG.md)
+- For license, see [LICENSE](./LICENSE)
