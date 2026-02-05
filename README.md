@@ -6,7 +6,6 @@
 - Automatically sets the classpath to the contents of the `.vscode/class-path.jsh` file (new-line separated entries)
 - Automatically loads the `.vscode/init.jsh` file, if found in the current workspace
 - JShell configuration in VSCode settings
-- [Gradle for Java](https://github.com/microsoft/vscode-gradle) extension integration to `assemble` and open a new JShell instance
 
 ![Screenshot](assets/screenshot.png)
 

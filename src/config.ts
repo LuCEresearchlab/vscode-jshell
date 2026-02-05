@@ -1,7 +1,7 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 function getFlags(config: string, option: string): string[] {
-  return config.split(' ')
+  return config.split(" ")
     .filter(flag => flag.length > 0)
     .flatMap(flag => [option, flag]);
 }
@@ -18,36 +18,36 @@ function getFlags(config: string, option: string): string[] {
  * - jshell.remoteRuntimeFlags: string
  */
 export function getShellConfigArgs(): string[] {
-  const config = vscode.workspace.getConfiguration('jshell');
+  const config = vscode.workspace.getConfiguration("jshell");
   const args: string[] = [];
 
   const configValues = {
-    feedback: config.get<string>('feedback'),
-    nativeAccess: config.get<boolean>('nativeAccess'),
-    preview: config.get<boolean>('preview'),
-    compilerFlags: config.get<string>('compilerFlags'),
-    runtimeFlags: config.get<string>('runtimeFlags'),
-    remoteRuntimeFlags: config.get<string>('remoteRuntimeFlags'),
+    feedback: config.get<string>("feedback"),
+    nativeAccess: config.get<boolean>("nativeAccess"),
+    preview: config.get<boolean>("preview"),
+    compilerFlags: config.get<string>("compilerFlags"),
+    runtimeFlags: config.get<string>("runtimeFlags"),
+    remoteRuntimeFlags: config.get<string>("remoteRuntimeFlags"),
   };
 
   if (configValues.feedback) {
-    args.push('--feedback');
+    args.push("--feedback");
     args.push(configValues.feedback);
   }
   if (configValues.nativeAccess) {
-    args.push('--enable-native-access');
+    args.push("--enable-native-access");
   }
   if (configValues.preview) {
-    args.push('--enable-preview');
+    args.push("--enable-preview");
   }
   if (configValues.compilerFlags) {
-    args.push(...getFlags(configValues.compilerFlags, '-C'));
+    args.push(...getFlags(configValues.compilerFlags, "-C"));
   }
   if (configValues.runtimeFlags) {
-    args.push(...getFlags(configValues.runtimeFlags, '-J'));
+    args.push(...getFlags(configValues.runtimeFlags, "-J"));
   }
   if (configValues.remoteRuntimeFlags) {
-    args.push(...getFlags(configValues.remoteRuntimeFlags, '-R'));
+    args.push(...getFlags(configValues.remoteRuntimeFlags, "-R"));
   }
 
   return args;
@@ -60,5 +60,5 @@ export function getShellConfigArgs(): string[] {
  * - jshell.shellPath: string
  */
 export function getShellPath(): string | undefined {
-  return vscode.workspace.getConfiguration('jshell').get<string>('shellPath');
+  return vscode.workspace.getConfiguration("jshell").get<string>("shellPath");
 }

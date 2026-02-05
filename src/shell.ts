@@ -1,27 +1,27 @@
-import fs from 'fs';
-import path from 'path';
-import { posix } from 'path';
-import * as vscode from 'vscode';
+import fs from "fs";
+import path from "path";
+import { posix } from "path";
+import * as vscode from "vscode";
 
 import {
   getShellConfigArgs,
   getShellPath,
-} from './config';
-import { getMainWorkspaceUri } from './utils';
+} from "./config";
+import { getMainWorkspaceUri } from "./utils";
 
 function getClassPath(
   workspaceUri: vscode.Uri,
   classPathFileUri: vscode.Uri,
 ): string {
-  const contents = fs.readFileSync(classPathFileUri.fsPath, 'utf-8');
+  const contents = fs.readFileSync(classPathFileUri.fsPath, "utf-8");
   return contents
-    .replace('\r\n', '\n') // CRLF -> LF
-    .replace('\r', '\n') // CR -> LF
-    .split('\n') // Split LF
+    .replace("\r\n", "\n") // CRLF -> LF
+    .replace("\r", "\n") // CR -> LF
+    .split("\n") // Split LF
     .filter(line => line.length > 0) // Non-empty
     .filter(path => {
       const uri = workspaceUri.with({
-        path: posix.join(workspaceUri.path, ...path.split('/')),
+        path: posix.join(workspaceUri.path, ...path.split("/")),
       });
       return fs.existsSync(uri.fsPath);
     }) // Entry exists
@@ -36,12 +36,12 @@ export function getShellArgs() {
     // Add additional entries to the classpath
     try {
       const cpUri = wsUri.with({
-        path: posix.join(wsUri.path, '.vscode', 'class-path.jsh'),
+        path: posix.join(wsUri.path, ".vscode", "class-path.jsh"),
       });
       if (fs.existsSync(cpUri.fsPath)) {
         const classPath = getClassPath(wsUri, cpUri);
         if (classPath.length > 0) {
-          args.push('--class-path');
+          args.push("--class-path");
           args.push(classPath);
         }
       }
@@ -52,7 +52,7 @@ export function getShellArgs() {
     // Execute code when the shell is started (e.g. imports)
     try {
       const initJshUri = wsUri.with({
-        path: posix.join(wsUri.path, '.vscode', 'init.jsh'),
+        path: posix.join(wsUri.path, ".vscode", "init.jsh"),
       });
       if (fs.existsSync(initJshUri.fsPath)) {
         args.push(initJshUri.fsPath);
@@ -68,7 +68,7 @@ export function getShellArgs() {
 export function createTerminalProfile(): vscode.TerminalProfile {
   return {
     options: {
-      name: 'JShell',
+      name: "JShell",
       shellPath: getShellPath(),
       shellArgs: getShellArgs(),
       cwd: getMainWorkspaceUri()?.fsPath,

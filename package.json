@@ -14,7 +14,7 @@
       "email": "bevilj@usi.ch"
     }
   ],
-  "version": "1.2.0",
+  "version": "1.3.0",
   "engines": {
     "vscode": "^1.100.0"
   },
@@ -35,11 +35,6 @@
       {
         "command": "vs-jshell:cmd-open-term",
         "title": "Open new JShell session",
-        "icon": "$(coffee)"
-      },
-      {
-        "command": "vs-jshell:cmd-gradle-assemble-open-term",
-        "title": "Assemble & Open new JShell session",
         "icon": "$(coffee)"
       }
     ],
@@ -105,15 +100,6 @@
         "when": "terminalProcessSupported && editorTextFocus && editorLangId == java"
       }
     ],
-    "menus": {
-      "editor/title/run": [
-        {
-          "when": "editorLangId == java",
-          "command": "vs-jshell:cmd-gradle-assemble-open-term",
-          "group": "navigation"
-        }
-      ]
-    },
     "terminal": {
       "profiles": [
         {
