@@ -65,13 +65,13 @@ export function getShellArgs() {
   return args;
 }
 
-export function createTerminalProfile(): vscode.TerminalProfile {
+export function createTerminalOptions(): vscode.TerminalOptions {
   return {
-    options: {
-      name: "JShell",
-      shellPath: getShellPath(),
-      shellArgs: getShellArgs(),
-      cwd: getMainWorkspaceUri()?.fsPath,
-    },
+    name: "JShell",
+    shellPath: getShellPath(),
+    shellArgs: getShellArgs(),
+    cwd: getMainWorkspaceUri(),
+    iconPath: new vscode.ThemeIcon("coffee"),
+    isTransient: true,
   };
 }

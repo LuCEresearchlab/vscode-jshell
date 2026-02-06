@@ -1,18 +1,9 @@
 import * as vscode from "vscode";
 
-import { getShellPath } from "./config";
-import { getShellArgs } from "./shell";
-import { getMainWorkspaceUri } from "./utils";
+import { createTerminalOptions } from "./shell";
 
 export function openJShellTerminal(): vscode.Terminal {
-  const terminal = vscode.window.createTerminal({
-    name: "JShell",
-    shellPath: getShellPath(),
-    shellArgs: getShellArgs(),
-    cwd: getMainWorkspaceUri(),
-    iconPath: new vscode.ThemeIcon("coffee"),
-    isTransient: true,
-  });
+  const terminal = vscode.window.createTerminal(createTerminalOptions());
   terminal.show();
   return terminal;
 }
