@@ -15,9 +15,7 @@ function getClassPath(
 ): string {
   const contents = fs.readFileSync(classPathFileUri.fsPath, "utf-8");
   return contents
-    .replace("\r\n", "\n") // CRLF -> LF
-    .replace("\r", "\n") // CR -> LF
-    .split("\n") // Split LF
+    .split(/\r?\n/)
     .filter(line => line.length > 0) // Non-empty
     .filter(path => {
       const uri = workspaceUri.with({
